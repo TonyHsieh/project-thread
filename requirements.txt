@@ -1,0 +1,15 @@
+# project-thread - Phase 0 environment (Assignment 2)
+# Create the env, then install from this file:
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install -r requirements.txt
+# Once the Phase 0 env check passes, pin the exact versions you installed:
+#   pip freeze > requirements.txt  (then commit the pinned file)
+torch
+transformers
+datasets
+tokenizers
+accelerate
+jupyter
+openai>=1.66.0
+python-dotenv==1.2.2
+pypdf>=5.0.0

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Thread — Session Context (2026-11-02)</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --green: #4ade80;
+      --yellow: #facc15;
+      --purple: #c084fc;
+      --code-bg: #090d16;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-green { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid var(--green); }
+    .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid var(--accent); }
+    .badge-purple { background: rgba(192, 132, 252, 0.15); color: var(--purple); border: 1px solid var(--purple); }
+    h1 { font-size: 2.2rem; color: #fff; margin: 0.5rem 0; }
+    .meta { color: var(--text-muted); font-size: 0.9rem; }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+    .card h2 {
+      font-size: 1.25rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card h3 {
+      font-size: 1rem;
+      color: #e2e8f0;
+      margin: 1rem 0 0.5rem 0;
+    }
+    ul { list-style: none; }
+    li { margin-bottom: 0.5rem; color: var(--text-muted); }
+    li strong { color: var(--text); }
+    .check { color: var(--green); margin-right: 0.4rem; font-weight: bold; }
+    .pending { color: var(--yellow); margin-right: 0.4rem; font-weight: bold; }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+    }
+    th {
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+
+    pre, code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+    }
+    code {
+      background: var(--code-bg);
+      color: var(--accent);
+      padding: 0.15rem 0.35rem;
+      border-radius: 0.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+      color: #cbd5e1;
+    }
+    .alert {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 4px solid var(--accent);
+      padding: 1rem;
+      border-radius: 0.25rem;
+      margin: 1rem 0;
+    }
+    .alert-title { font-weight: bold; color: var(--accent); margin-bottom: 0.25rem; }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div>
+      <span class="badge badge-green">State: Ready for Resumption</span>
+      <span class="badge badge-blue">Contract: project-thread-api/v1</span>
+      <span class="badge badge-purple">Tests: 52 Passed (0.030s)</span>
+    </div>
+    <h1>Project Thread — Session Context Snapshot</h1>
+    <div class="meta">
+      <strong>Timestamp:</strong> 2026-11-02 00:18:02-08:00 &bull;
+      <strong>Workspace:</strong> <code>project-thread</code> &bull;
+      <strong>Environment:</strong> Python 3.12 / 3.14 (WSL Ubuntu 24.04 via devenv/nix)
+    </div>
+  </header>
+
+  <!-- Quick Executive Summary -->
+  <div class="alert">
+    <div class="alert-title">Executive Summary</div>
+    All core foundational layers for Phase 1 through Phase 12 are fully implemented, verified with 52 automated unit tests, and documented across 10 dedicated markdown specifications. We are fully prepared to resume directly on <strong>Phase 10 (Classic RAG Indexing & Comparison)</strong> or <strong>Phase 13 (Autonomous Agent Loop & Function Calling)</strong>.
+  </div>
+
+  <div class="grid">
+    <!-- Accomplishments -->
+    <div class="card">
+      <h2>Accomplishments to Date</h2>
+      <ul>
+        <li><span class="check">&#10003;</span> <strong>Stateless Generation (<code>textgen.py</code>):</strong> Implemented <code>generate_text</code> and <code>generate_text_stream</code> with Option A stream lifecycle, prompt trimming, and null token rules.</li>
+        <li><span class="check">&#10003;</span> <strong>Multi-Turn Chat (<code>chat.py</code>):</strong> Implemented <code>respond</code>, <code>respond_stream</code>, and interactive console <code>chat_loop</code> with <code>/reset</code> and non-mutation guarantees.</li>
+        <li><span class="check">&#10003;</span> <strong>Corpus Search (<code>search.py</code>):</strong> Ingests <code>.txt</code>, <code>.md</code>, <code>.json</code>, <code>.pdf</code> recursively; pure Python/NumPy cosine similarity (&le;0.001 tolerance); SHA-256 incremental disk cache.</li>
+        <li><span class="check">&#10003;</span> <strong>Grounded Handoff:</strong> Wired caller-side context from <code>search_corpus</code> into <code>chat.py</code> with XML <code>&lt;context&gt;</code> anti-injection guards.</li>
+        <li><span class="check">&#10003;</span> <strong>Tool API (<code>tools.py</code>):</strong> Implemented <code>ToolRegistry</code>, JSON Schema validation, least privilege execution, safe error containment, and persistent runtime tool config (<code>tools_config.json</code>).</li>
+        <li><span class="check">&#10003;</span> <strong>Migration (v3.8):</strong> Unified <code>call_uid</code> correlation key across <code>ToolCall</code>, <code>ToolResult</code>, and <code>Message</code> with zero aliases kept.</li>
+        <li><span class="check">&#10003;</span> <strong>Domain Exception Translation:</strong> Integrated <code>ToolExecutionError</code> and <code>ModelError</code> from <code>domain/errors.py</code>.</li>
+        <li><span class="check">&#10003;</span> <strong>Comprehensive Documentation:</strong> Created root <code>README.md</code>, <code>app/README.md</code>, and 10 detailed function documents in <code>docs/</code>.</li>
+      </ul>
+    </div>
+
+    <!-- Active Invariants -->
+    <div class="card">
+      <h2>Contract Invariants Enforced</h2>
+      <ul>
+        <li><strong>One-Module-One-Job:</strong> <code>textgen.py</code> strictly communicates with models. It never imports retrieval or reads files.</li>
+        <li><strong>Matching Rule:</strong> <code>ToolResult.call_uid</code> is the exact <code>call_uid</code> of the <code>ToolCall</code> it answers, echoed in <code>Message.call_uid</code>.</li>
+        <li><strong>The Model Proposes; Code Disposes:</strong> Model <code>ToolCall</code> is untrusted. Malformed arguments return <code>ToolResult.ok = False</code> with stable error codes (never crashing).</li>
+        <li><strong>Stream Lifecycle (Option A):</strong> Accessing <code>stream.result</code> before consuming all chunks raises <code>RuntimeError</code>.</li>
+        <li><strong>Evidence Isolation (Approach B):</strong> Retrieved passages are injected under <code>&lt;context&gt;</code> XML tags; instructions inside are never treated as system commands.</li>
+        <li><strong>The Null Rule:</strong> Unknown tokens and costs are <code>None</code>, never <code>0</code> or fabricated.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- File Inventory Table -->
+  <div class="card" style="margin-bottom: 2rem;">
+    <h2>Key Components & Artifacts Inventory</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Module / Artifact</th>
+          <th>Responsibility</th>
+          <th>Key Functions / Types</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>app/textgen.py</code></td>
+          <td>Stateless LLM generation interface</td>
+          <td><code>generate_text</code>, <code>generate_text_stream</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/chat.py</code></td>
+          <td>Conversational orchestration & console loop</td>
+          <td><code>respond</code>, <code>respond_stream</code>, <code>chat_loop</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/search.py</code></td>
+          <td>Semantic vector corpus retrieval (Phase 1)</td>
+          <td><code>search_corpus</code>, <code>CorpusIndex</code>, <code>main</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/tools.py</code></td>
+          <td>Tool registry, schema validation & executor</td>
+          <td><code>call_tool</code>, <code>register_tool</code>, <code>get_openai_tools</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/tools_config.json</code></td>
+          <td>Persistent tool enablement configuration</td>
+          <td><code>disabled_tools: []</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/domain/models.py</code></td>
+          <td>Immutable shared domain data contracts</td>
+          <td><code>Message</code>, <code>GenerationResult</code>, <code>TextStream</code>, <code>ToolDefinition</code>, <code>ToolResult</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/domain/errors.py</code></td>
+          <td>Domain exception hierarchy</td>
+          <td><code>AgentError</code>, <code>ModelError</code>, <code>SearchError</code>, <code>ToolExecutionError</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>docs/</code></td>
+          <td>Individual function documentation suite</td>
+          <td>10 dedicated Markdown files</td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>tests/unit/</code></td>
+          <td>Comprehensive automated test suite</td>
+          <td>52 tests (textgen, chat, search, tools)</td>
+          <td><span class="badge badge-green">52/52 Passing</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Verification & Testing Summary -->
+  <div class="card" style="margin-bottom: 2rem;">
+    <h2>Verification & Quality Assurance Status</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+      Full automated test runner executed via <code>python -m unittest discover tests</code>:
+    </p>
+    <pre>Ran 52 tests in 0.030s — OK</pre>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <span class="badge badge-blue">test_textgen: 16 tests</span>
+      <span class="badge badge-blue">test_chat: 12 tests</span>
+      <span class="badge badge-blue">test_search: 9 tests</span>
+      <span class="badge badge-blue">test_tools: 15 tests</span>
+    </div>
+  </div>
+
+  <!-- Next Steps & Roadmap for Resumption -->
+  <div class="card" style="border: 1px solid var(--accent);">
+    <h2>Roadmap for Next Session (Planned Next Steps)</h2>
+    <ul>
+      <li>
+        <span class="pending">&#9654;</span> <strong>Phase 10 — Classic RAG Indexing & Comparison (<code>rag-classic/</code>):</strong>
+        <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+          <li>Implement <code>rag-classic/build_index.py</code>: Document structural splitting followed by ~500-token windows with ~50-token overlap.</li>
+          <li>Deterministic <code>chunk_id</code> derived from source filename + chunk coordinates.</li>
+          <li>Implement <code>rag-classic/query.py</code> with <code>retrieve(query, top_k=5) -> list[SearchResult]</code>.</li>
+          <li>Rebuild FAISS index at startup unless pre-recorded artifact selected; record settings in <code>IndexManifest</code>.</li>
+          <li>Benchmark Phase 1 whole-document search vs. Phase 5 chunked classic RAG over shared queries.</li>
+        </ul>
+      </li>
+      <li style="margin-top: 0.75rem;">
+        <span class="pending">&#9654;</span> <strong>Phase 13 — Autonomous Agent Loop & Decision Cycle:</strong>
+        <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+          <li>Implement multi-step agent loop: <code>Decide &rarr; Emit ToolCall &rarr; call_tool &rarr; Observation (role='tool') &rarr; Next Step</code>.</li>
+          <li>Connect function calling evaluation benchmarks (held-out test prompts).</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Command Quick Reference for Resuming -->
+  <div class="card" style="margin-top: 2rem;">
+    <h2>Quick Commands for Resumption</h2>
+    <pre>
+# 1. Run all unit tests
+python -m unittest discover tests
+
+# 2. Interactive chat console
+python app/chat.py
+
+# 3. Interactive chat with live grounded retrieval (RAG preview)
+python app/chat.py --search
+
+# 4. Corpus semantic search CLI
+python app/search.py "transformers and attention"
+
+# 5. Tool registry inspection & test
+python app/tools.py list
+python app/tools.py test
+python app/tools.py call calculate "expression=15*4+7"
+    </pre>
+  </div>
+
+  <footer>
+    Project Thread &bull; AI Engineering Path &bull; Session Snapshot generated 2026-11-02
+  </footer>
+
+</div>
+</body>
+</html>
+

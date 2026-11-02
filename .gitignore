@@ -2,3 +2,11 @@
 __pycache__/
 *.db
 .venv/
+.corpus_cache.json
+*.cache.json
+course-repos/
+.ipynb_checkpoints
+.direnv/
+.devenv/
+flake.lock
+corpus/
