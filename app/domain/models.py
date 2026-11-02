@@ -15,6 +15,8 @@ Breaking changes require:
 Do not make silent schema edits.
 """
 
+from __future__ import annotations
+
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
 from typing import Any, Literal
@@ -47,6 +49,17 @@ AgentFinishReason = Literal[
 
 
 @dataclass(frozen=True)
+class ToolCall:
+    """
+    Tool invocation requested by the model.
+    """
+
+    call_uid: str
+    name: str
+    arguments: dict[str, Any] | str
+
+
+@dataclass(frozen=True)
 class Message:
     """
     Identity:
@@ -65,6 +78,7 @@ class Message:
     content: str
     name: str | None = None
     call_uid: str | None = None
+    tool_calls: tuple[ToolCall, ...] | None = None
 
 
 @dataclass(frozen=True)
@@ -92,6 +106,7 @@ class GenerationResult:
     est_cost: float | None
 
     finish_reason: GenerationFinishReason
+    tool_calls: tuple[ToolCall, ...] | None = None
 
 
 class TextStream(Iterator[str]):
@@ -202,17 +217,6 @@ class ToolDefinition:
     description: str
     input_schema: dict[str, Any]
     handler: Callable[..., Any]
-
-
-@dataclass(frozen=True)
-class ToolCall:
-    """
-    Tool invocation requested by the model.
-    """
-
-    call_uid: str
-    name: str
-    arguments: dict[str, Any]
 
 
 @dataclass(frozen=True)

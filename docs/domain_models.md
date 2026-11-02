@@ -33,7 +33,8 @@ class Message:
     role: Literal["system", "user", "assistant", "tool"]
     content: str
     name: str | None = None
-    call_uid: str | None = None  # Populated when role == 'tool'
+    call_uid: str | None = None                      # Populated when role == 'tool'
+    tool_calls: tuple[ToolCall, ...] | None = None   # Populated when role == 'assistant'
 ```
 *Ordering Invariant:* Collections of messages must be ordered oldest $\to$ newest.
 
@@ -50,6 +51,7 @@ class GenerationResult:
     tokens_out: int | None
     est_cost: float | None
     finish_reason: Literal["stop", "length", "tool_calls", "content_filter", "error"]
+    tool_calls: tuple[ToolCall, ...] | None = None   # Populated when finish_reason == 'tool_calls'
 ```
 *The Null Rule:* Unknown token metrics and costs are `None`, never `0` or estimated.
 

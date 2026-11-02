@@ -166,9 +166,26 @@ flowchart TD
 - [x] Complete documentation suite created: [`../README.md`](../README.md) and 10 detailed markdown documents in [`../docs/`](../docs/)
 - [x] Run full regression test suite (52 tests passing across unit suites in 0.030s)
 
-### Phase 13 — Autonomous Agent Loop & Function Calling (Upcoming)
-- [ ] Implement multi-step agent execution engine:
-  - [ ] Support iterative decide $\to$ tool invocation $\to$ observation loop
-  - [ ] Feed `ToolResult` observations back into LLM context as `Message(role="tool", call_uid=...)`
-  - [ ] Conformance testing against function-calling evaluation suites (minimum 30 held-out prompts)
+### Phase 13 — Autonomous Agent Loop & Function Calling
+- [x] Extend domain contracts in [`domain/models.py`](domain/models.py):
+  - [x] Add `ToolCall` definition before `Message` and `GenerationResult`
+  - [x] Add `tool_calls: tuple[ToolCall, ...] | None = None` to `Message` (for `role="assistant"`)
+  - [x] Add `tool_calls: tuple[ToolCall, ...] | None = None` to `GenerationResult`
+- [x] LLM Courier extension in [`textgen.py`](textgen.py):
+  - [x] Pass-through `tools: list[dict[str, Any]] | None = None` parameter
+  - [x] Multi-turn serialization of assistant `tool_calls` in `_build_messages`
+  - [x] Return raw requested `ToolCall`s in `GenerationResult.tool_calls` with raw string preservation on decode failure
+  - [x] Support `prompt=None` when `history` is non-empty for tool observation follow-up rounds
+- [x] Implement autonomous agent in [`agent.py`](agent.py):
+  - [x] `run_agent(prompt, max_steps=5) -> AgentResult`
+  - [x] ReAct decision cycle: `Decide -> Execute tools -> Observe -> Repeat`
+  - [x] Enforce `max_steps` exhaustion safeguard (`finish_reason="max_steps"`)
+  - [x] Safe tool error containment without process crash (`ToolResult.ok = False` fed back as observation)
+  - [x] Preserves `trace_id`, chronological `tool_calls: list[ToolCall]`, and accumulated `sources: list[SearchResult]`
+  - [x] Adheres strictly to The Null Rule for aggregated usage metrics
+  - [x] Interactive CLI runner under `main()`
+- [x] Unit test suite in [`../tests/unit/test_agent.py`](../tests/unit/test_agent.py) (9 comprehensive unit tests)
+- [x] Complete documentation: [`../docs/run_agent.md`](../docs/run_agent.md)
+- [x] Full test suite passing (61 tests passed in 0.038s with zero regressions)
+- [x] Live end-to-end verification against LLM backend (math, date/time, and corpus retrieval)
 

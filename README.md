@@ -44,6 +44,7 @@ Detailed API contracts, parameters, invariants, and examples for every core func
 | **Tool Execution** | `call_tool(...)` | [`docs/call_tool.md`](docs/call_tool.md) |
 | **Tool Registry** | `register_tool(...)` | [`docs/register_tool.md`](docs/register_tool.md) |
 | **OpenAI Tool Export** | `get_openai_tools(...)` | [`docs/get_openai_tools.md`](docs/get_openai_tools.md) |
+| **Autonomous Agent** | `run_agent(...)` | [`docs/run_agent.md`](docs/run_agent.md) |
 | **Domain Contracts** | Models, Invariants & v3.8 Migration | [`docs/domain_models.md`](docs/domain_models.md) |
 
 ---
