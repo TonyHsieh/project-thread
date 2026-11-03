@@ -199,6 +199,60 @@ class TestAgentExecution(unittest.TestCase):
         self.assertEqual(res.sources[0].source_filename, "doc1.txt")
         self.assertEqual(res.sources[0].score, 0.92)
 
+    @patch("tools.call_tool")
+    @patch("textgen.generate_text")
+    def test_sources_accumulation_generic_tool(self, mock_gen, mock_call_tool):
+        """Verify sources are accumulated based on SearchResult type, regardless of tool name."""
+        call_uid = "call_custom_retriever"
+        mock_gen.side_effect = [
+            GenerationResult(
+                text="",
+                model_id="gpt-4o",
+                tokens_in=10,
+                tokens_out=5,
+                est_cost=None,
+                finish_reason="tool_calls",
+                tool_calls=(
+                    ToolCall(
+                        call_uid=call_uid,
+                        name="arbitrary_vector_retriever",
+                        arguments={"query": "agentic patterns"},
+                    ),
+                ),
+            ),
+            GenerationResult(
+                text="Patterns include ReAct and orchestrators.",
+                model_id="gpt-4o",
+                tokens_in=20,
+                tokens_out=6,
+                est_cost=None,
+                finish_reason="stop",
+            ),
+        ]
+
+        expected_source = SearchResult(
+            source_filename="patterns.md",
+            chunk_id="patterns.md:1",
+            text="ReAct pattern details...",
+            score=0.95,
+            metadata={"source": "custom"},
+        )
+
+        mock_call_tool.return_value = ToolResult(
+            call_uid=call_uid,
+            name="arbitrary_vector_retriever",
+            ok=True,
+            content="Retrieved patterns.md",
+            sources=(expected_source,),
+        )
+
+        res = agent.run_agent("Find patterns", max_steps=5)
+
+        self.assertEqual(res.finish_reason, "final")
+        self.assertEqual(len(res.sources), 1)
+        self.assertEqual(res.sources[0].source_filename, "patterns.md")
+        self.assertEqual(res.sources[0].score, 0.95)
+
     @patch("textgen.generate_text")
     def test_tool_error_fed_back_and_recovered(self, mock_gen):
         call_uid = "call_err_1"

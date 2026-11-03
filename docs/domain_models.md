@@ -147,6 +147,7 @@ class ToolResult:
     content: str
     data: dict[str, Any] | None = None
     error: ToolError | None = None
+    sources: tuple[SearchResult, ...] | None = None  # Populated when tool performs retrieval
 ```
 
 ---

@@ -24,7 +24,7 @@ import uuid
 import jsonschema
 
 from domain.errors import ToolExecutionError
-from domain.models import ToolDefinition, ToolError, ToolResult
+from domain.models import SearchResult, ToolDefinition, ToolError, ToolResult
 import search
 
 # ---------------------------------------------------------------------------
@@ -275,16 +275,24 @@ def call_tool(
             ),
         )
 
-    # 6. Format successful output
-    if isinstance(raw_output, str):
-        content = raw_output
-        data = None
-    elif isinstance(raw_output, dict):
+    # 6. Format successful output and extract sources if present
+    extracted_sources: tuple[SearchResult, ...] | None = None
+    if isinstance(raw_output, dict):
+        if "sources" in raw_output and isinstance(raw_output["sources"], (list, tuple)):
+            found_sources = tuple(s for s in raw_output["sources"] if isinstance(s, SearchResult))
+            if found_sources:
+                extracted_sources = found_sources
         content = json.dumps(raw_output, default=str)
         data = raw_output
-    elif isinstance(raw_output, list):
+    elif isinstance(raw_output, (list, tuple)):
+        found_sources = tuple(s for s in raw_output if isinstance(s, SearchResult))
+        if found_sources:
+            extracted_sources = found_sources
         content = json.dumps(raw_output, default=str)
         data = {"items": raw_output}
+    elif isinstance(raw_output, str):
+        content = raw_output
+        data = None
     else:
         content = str(raw_output)
         data = {"value": raw_output}
@@ -296,6 +304,7 @@ def call_tool(
         content=content,
         data=data,
         error=None,
+        sources=extracted_sources,
     )
 
 
@@ -360,7 +369,12 @@ def search_corpus_handler(query: str, top_k: int = 5) -> dict[str, Any]:
         }
         for r in results
     ]
-    return {"query": query, "results": serialized, "count": len(serialized)}
+    return {
+        "query": query,
+        "results": serialized,
+        "count": len(serialized),
+        "sources": results,
+    }
 
 
 def get_current_time_handler(timezone_name: str = "UTC") -> dict[str, Any]:

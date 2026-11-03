@@ -141,21 +141,30 @@ def run_agent(
             accumulated_tool_calls.append(tc)
             tool_res = tools.call_tool(tc.name, tc.arguments, call_uid=tc.call_uid)
 
-            # Capture sources if search_corpus was called
-            if tc.name == "search_corpus" and tool_res.ok and tool_res.data:
-                for item in tool_res.data.get("results", []):
-                    if isinstance(item, SearchResult):
-                        accumulated_sources.append(item)
-                    elif isinstance(item, dict):
-                        accumulated_sources.append(
-                            SearchResult(
-                                source_filename=item.get("source_filename", ""),
-                                chunk_id=item.get("chunk_id"),
-                                text=item.get("text", ""),
-                                score=item.get("score", 0.0),
-                                metadata=item.get("metadata", {}),
-                            )
-                        )
+            # Generic source accumulation: leverage known SearchResult type in array
+            if tool_res.sources:
+                accumulated_sources.extend(tool_res.sources)
+            elif tool_res.data:
+                for val in tool_res.data.values():
+                    if isinstance(val, (list, tuple)):
+                        for item in val:
+                            if isinstance(item, SearchResult):
+                                accumulated_sources.append(item)
+                            elif (
+                                isinstance(item, dict)
+                                and "source_filename" in item
+                                and "score" in item
+                                and "text" in item
+                            ):
+                                accumulated_sources.append(
+                                    SearchResult(
+                                        source_filename=item["source_filename"],
+                                        chunk_id=item.get("chunk_id"),
+                                        text=item["text"],
+                                        score=float(item["score"]),
+                                        metadata=item.get("metadata", {}),
+                                    )
+                                )
 
             # Format tool observation
             if tool_res.ok:

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Thread — Session Context (2026-11-02 23:10)</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --green: #4ade80;
+      --yellow: #facc15;
+      --purple: #c084fc;
+      --code-bg: #090d16;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-green { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid var(--green); }
+    .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid var(--accent); }
+    .badge-purple { background: rgba(192, 132, 252, 0.15); color: var(--purple); border: 1px solid var(--purple); }
+    h1 { font-size: 2.2rem; color: #fff; margin: 0.5rem 0; }
+    .meta { color: var(--text-muted); font-size: 0.9rem; }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+    .card h2 {
+      font-size: 1.25rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card h3 {
+      font-size: 1rem;
+      color: #e2e8f0;
+      margin: 1rem 0 0.5rem 0;
+    }
+    ul { list-style: none; }
+    li { margin-bottom: 0.5rem; color: var(--text-muted); }
+    li strong { color: var(--text); }
+    .check { color: var(--green); margin-right: 0.4rem; font-weight: bold; }
+    .pending { color: var(--yellow); margin-right: 0.4rem; font-weight: bold; }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+    }
+    th {
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+
+    pre, code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+    }
+    code {
+      background: var(--code-bg);
+      color: var(--accent);
+      padding: 0.15rem 0.35rem;
+      border-radius: 0.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+      color: #cbd5e1;
+    }
+    .alert {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 4px solid var(--accent);
+      padding: 1rem;
+      border-radius: 0.25rem;
+      margin: 1rem 0;
+    }
+    .alert-title { font-weight: bold; color: var(--accent); margin-bottom: 0.25rem; }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div>
+      <span class="badge badge-green">State: Ready for Resumption</span>
+      <span class="badge badge-blue">Contract: project-thread-api/v1</span>
+      <span class="badge badge-purple">Tests: 62 Passed (0.038s)</span>
+    </div>
+    <h1>Project Thread — Session Context Snapshot</h1>
+    <div class="meta">
+      <strong>Timestamp:</strong> 2026-11-02 23:10:06-08:00 &bull;
+      <strong>Workspace:</strong> <code>project-thread</code> &bull;
+      <strong>Environment:</strong> Python 3.14.8 (WSL Ubuntu 24.04 via devenv/nix: <code>.devenv/state/venv</code>)
+    </div>
+  </header>
+
+  <!-- Executive Summary -->
+  <div class="alert">
+    <div class="alert-title">Executive Summary — Phase 13 Complete</div>
+    In this session, we designed, implemented, and fully verified <strong>Phase 13: Autonomous Agent Loop &amp; Function Calling (<code>app/agent.py</code>)</strong>. We aligned domain models for tool calling (<code>Message.tool_calls</code>, <code>GenerationResult.tool_calls</code>, <code>ToolResult.sources</code>), extended the stateless LLM courier (<code>app/textgen.py</code>) with multi-turn serialization and raw argument preservation, built the autonomous ReAct engine with generic type-driven source capture, added 10 unit tests (suite now at <strong>62 passing tests</strong>), and performed live multi-tool and corpus-retrieval verification against the LLM backend.
+  </div>
+
+  <div class="grid">
+    <!-- Accomplishments in this Session -->
+    <div class="card">
+      <h2>Accomplishments in this Session</h2>
+      <ul>
+        <li><span class="check">&#10003;</span> <strong>Domain Contract Alignment (<code>models.py</code>):</strong>
+          Reordered <code>ToolCall</code> before <code>Message</code> and <code>GenerationResult</code>. Added immutable <code>tool_calls: tuple[ToolCall, ...] | None = None</code> to both. Added <code>sources: tuple[SearchResult, ...] | None = None</code> to <code>ToolResult</code>.
+        </li>
+        <li><span class="check">&#10003;</span> <strong>LLM Courier Extension (<code>textgen.py</code>):</strong>
+          Added pass-through <code>tools: list[dict] | None</code> to <code>generate_text</code>. Serializes assistant tool calls for subsequent rounds. Enabled <code>prompt=None</code> with non-empty <code>history</code> for tool observation follow-up turns. Preserves verbatim raw strings on JSON decode failures.
+        </li>
+        <li><span class="check">&#10003;</span> <strong>Autonomous Agent Loop (<code>app/agent.py</code>):</strong>
+          Implemented <code>run_agent(prompt, max_steps=5) -> AgentResult</code> with ReAct decision cycle (<code>Decide &rarr; call_tool &rarr; Observe &rarr; Repeat</code>), <code>max_steps</code> safeguard, and safe error containment without crashes.
+        </li>
+        <li><span class="check">&#10003;</span> <strong>Generic Type-Driven Source Capture:</strong>
+          Removed hardcoded tool name checks in <code>agent.py</code>. The orchestrator collects sources generically by inspecting the known <code>SearchResult</code> type across <code>ToolResult.sources</code> and <code>ToolResult.data</code>.
+        </li>
+        <li><span class="check">&#10003;</span> <strong>Testing &amp; Live Verification:</strong>
+          Created <code>tests/unit/test_agent.py</code> (10 unit tests). Suite grew from 52 to <strong>62 passed tests (0.038s)</strong>. Verified live execution for multi-tool parallel dispatch and corpus retrieval.
+        </li>
+        <li><span class="check">&#10003;</span> <strong>Documentation:</strong>
+          Created <code>docs/run_agent.md</code>, updated <code>README.md</code>, <code>app/plan.md</code>, and <code>docs/domain_models.md</code>.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Active Invariants -->
+    <div class="card">
+      <h2>Contract Invariants Enforced</h2>
+      <ul>
+        <li><strong>One-Module-One-Job:</strong> <code>textgen.py</code> is strictly a stateless model boundary. It never executes tools or accesses file systems.</li>
+        <li><strong>The Model Proposes; Code Disposes:</strong> Tool invocations are untrusted. <code>call_tool</code> validates schemas, isolates crashes (<code>ok = False</code>), and the agent feeds errors back so the model can self-correct.</li>
+        <li><strong>Generic Source Collection:</strong> The agent loop never branches on tool names (like <code>search_corpus</code>); it inspects types (<code>SearchResult</code>).</li>
+        <li><strong>Migration (v3.8) Correlation:</strong> <code>call_uid</code> is strictly preserved across <code>ToolCall.call_uid == ToolResult.call_uid == Message.call_uid</code>.</li>
+        <li><strong>The Null Rule:</strong> Unknown token metrics and unpriced costs are <code>None</code>, never <code>0</code> or fabricated.</li>
+        <li><strong>Step Definition:</strong> <code>AgentResult.steps</code> measures model decision rounds (generation calls), not individual tool count.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Key Components Inventory Table -->
+  <div class="card" style="margin-bottom: 2rem;">
+    <h2>Key Components &amp; Artifacts Inventory</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Module / Artifact</th>
+          <th>Responsibility</th>
+          <th>Key Functions / Models</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>app/agent.py</code></td>
+          <td>Autonomous ReAct agent decision-execution loop</td>
+          <td><code>run_agent</code>, <code>main</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/textgen.py</code></td>
+          <td>Stateless LLM generation interface &amp; tool courier</td>
+          <td><code>generate_text</code>, <code>generate_text_stream</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/chat.py</code></td>
+          <td>Multi-turn conversational adapter &amp; console loop</td>
+          <td><code>respond</code>, <code>respond_stream</code>, <code>chat_loop</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/search.py</code></td>
+          <td>Semantic vector corpus retrieval (Phase 1)</td>
+          <td><code>search_corpus</code>, <code>CorpusIndex</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/tools.py</code></td>
+          <td>Tool registry, schema validation, and starter tools</td>
+          <td><code>call_tool</code>, <code>register_tool</code>, <code>get_openai_tools</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>app/domain/models.py</code></td>
+          <td>Immutable shared domain data contracts</td>
+          <td><code>Message</code>, <code>ToolCall</code>, <code>ToolResult</code>, <code>AgentResult</code>, <code>Usage</code></td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>docs/run_agent.md</code></td>
+          <td>Autonomous agent API specification</td>
+          <td>Sequence diagrams, parameters, invariants</td>
+          <td><span class="badge badge-green">Complete</span></td>
+        </tr>
+        <tr>
+          <td><code>tests/unit/</code></td>
+          <td>Automated test suite (5 modules)</td>
+          <td>62 tests passing in 0.038s</td>
+          <td><span class="badge badge-green">62/62 Passing</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Roadmap for Resumption -->
+  <div class="card" style="border: 1px solid var(--accent); margin-bottom: 2rem;">
+    <h2>Planned Next Steps (Roadmap for Next Session)</h2>
+    <ul>
+      <li>
+        <span class="pending">&#9654;</span> <strong>Phase 10 — Classic RAG Indexing &amp; Comparison (<code>rag-classic/</code>):</strong>
+        <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+          <li>Create <code>rag-classic/</code> package structure.</li>
+          <li>Implement <code>rag-classic/build_index.py</code>:
+            Document structural splitting followed by ~500-token windows with ~50-token overlap.
+            Deterministic <code>chunk_id</code> derived from source filename + chunk coordinates.
+            FAISS index generation with parameters recorded in <code>IndexManifest</code>.
+          </li>
+          <li>Implement <code>rag-classic/query.py</code>:
+            <code>retrieve(query: str, top_k: int = 5) -> list[SearchResult]</code>.
+            Adheres strictly to existing <code>SearchResult</code> domain model and ordering invariants.
+          </li>
+          <li>Comparative retrieval benchmark:
+            Compare Phase 1 whole-document retrieval (<code>search_corpus</code>) vs. Phase 5 chunked classic RAG over shared queries.
+          </li>
+          <li>Add unit tests in <code>tests/unit/test_rag_classic.py</code>.</li>
+        </ul>
+      </li>
+      <li style="margin-top: 0.75rem;">
+        <span class="pending">&#9654;</span> <strong>Agent Evaluation &amp; Benchmarking:</strong>
+        <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+          <li>Create held-out benchmark evaluation prompt suite (e.g., in <code>evals/</code>).</li>
+          <li>Test multi-step tool reasoning accuracy, step efficiency, and error recovery across test prompts.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Quick Commands for Resumption -->
+  <div class="card">
+    <h2>Quick Commands for Resumption</h2>
+    <pre>
+# 1. Run all unit tests (WSL environment)
+wsl -d Ubuntu-24.04 bash -c "cd /home/tonyh/_Projects/ai-path-workspace/project-thread && .devenv/state/venv/bin/python -m unittest discover tests"
+
+# 2. Run Autonomous Agent CLI
+wsl -d Ubuntu-24.04 bash -c "cd /home/tonyh/_Projects/ai-path-workspace/project-thread && .devenv/state/venv/bin/python app/agent.py 'What is 1542 multiplied by 38 plus 419, and what is the current UTC date?'"
+
+# 3. Run Autonomous Agent with Corpus Retrieval
+wsl -d Ubuntu-24.04 bash -c "cd /home/tonyh/_Projects/ai-path-workspace/project-thread && .devenv/state/venv/bin/python app/agent.py 'According to the corpus documents, what are key aspects of transitioning to an AI engineer?'"
+
+# 4. Interactive Chat Console (with optional retrieval)
+wsl -d Ubuntu-24.04 bash -c "cd /home/tonyh/_Projects/ai-path-workspace/project-thread && .devenv/state/venv/bin/python app/chat.py --search"
+    </pre>
+  </div>
+
+  <footer>
+    Project Thread &bull; AI Engineering Path &bull; Session Snapshot generated 2026-11-02 23:10:06-08:00
+  </footer>
+
+</div>
+</body>
+</html>
+
